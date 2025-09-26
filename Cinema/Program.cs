@@ -1,11 +1,16 @@
+using DataAccess.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 string connStr = builder.Configuration.GetConnectionString("Remotedb")
     ?? throw new Exception("No Connection String found.");
+
 // Add services to the container.
 
+builder.Services.AddDbContext<CinemaDbContext>(options =>
+    options.UseSqlServer(connStr));
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -53,8 +58,7 @@ app.Run();
 //builder.Services.AddTransient<IEmailSender, EmailSender>();
 //builder.Services.AddScoped<IViewRender, ViewRender>();
 
-//builder.Services.AddDbContext<ShelterDbContext>(options =>
-//    options.UseSqlServer(connStr));
+
 
 //var app = builder.Build();
 
