@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35828.75 d17.13
+VisualStudioVersion = 17.13.35828.75
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cinema", "Cinema\Cinema.csproj", "{BE9DBEBC-7238-45B5-8D5B-F92BB6428A89}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{46B4E7CC-5878-4BCF-BA6B-96AB65E2C75B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuisnessLogic", "BuisnessLogic\BuisnessLogic.csproj", "{AF36BED1-913C-4E97-824F-B90730E40F6A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{46B4E7CC-5878-4BCF-BA6B-96AB65E2C75B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46B4E7CC-5878-4BCF-BA6B-96AB65E2C75B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46B4E7CC-5878-4BCF-BA6B-96AB65E2C75B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF36BED1-913C-4E97-824F-B90730E40F6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF36BED1-913C-4E97-824F-B90730E40F6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF36BED1-913C-4E97-824F-B90730E40F6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF36BED1-913C-4E97-824F-B90730E40F6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

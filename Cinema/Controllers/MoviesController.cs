@@ -1,6 +1,9 @@
-﻿using DataAccess.Data;
+﻿using AutoMapper;
+using BuisnessLogic.DTOs;
+using DataAccess.Data;
 using DataAccess.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cinema.Controllers
 {
@@ -10,18 +13,23 @@ namespace Cinema.Controllers
     {
         
         private readonly CinemaDbContext ctx;
+        private readonly IMapper mapper;
 
-        public MoviesController(CinemaDbContext ctx)
+        public MoviesController(CinemaDbContext ctx, IMapper mapper)
         {
              this.ctx = ctx;
+            this.mapper = mapper;
         }
 
         [HttpGet("all")]
         public IActionResult GetAll()
         {
-            var items = ctx.Movies.ToList();
+            //var items = ctx.Movies.ToList();
+            var items = ctx.Movies
+                           .Include(x => x.Genre)
+                           .ToList();
 
-            return Ok(items);
+            return Ok(mapper.Map<IEnumerable<MovieDto>>(items));
         }
 
         [HttpGet]
@@ -38,7 +46,7 @@ namespace Cinema.Controllers
              return Ok(item);
         }
         [HttpPost]
-        public IActionResult Create(Movie model)
+        public IActionResult Create(CreateMovieDto model)
         {
             // TODO: reference (class) vs value (structures)
 
@@ -47,18 +55,17 @@ namespace Cinema.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(GetErrorMessages());
 
-            //public IActionResult Edit()
-            //{
-            // logic...
-            ctx.Movies.Add(model);
+            var entity = mapper.Map<Movie>(model);
+            ctx.Movies.Add(entity);
             ctx.SaveChanges(); // generate id (execute INSERT SQL command)
 
+            var result = mapper.Map<MovieDto>(entity);
             //}
             // 201
             return CreatedAtAction(
                 nameof(Get),            // The action to get a single product
-                new { id = model.Id },  // Route values for that action
-                model                   // Response body
+                new { id = result.Id },  // Route values for that action
+                result                   // Response body
             );
         }
 
@@ -74,6 +81,20 @@ namespace Cinema.Controllers
             ctx.SaveChanges();
 
             return Ok(); // 200
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            if (id < 0)
+                return BadRequest("Id can not be negative!");
+
+            var item = ctx.Movies.Find(id);
+            if (item == null)
+                return NotFound("Product not found!");
+            ctx.Movies.Remove(item);
+            ctx.SaveChanges();
+            return NoContent(); // 204
         }
         private IEnumerable<string> GetErrorMessages()
         {

@@ -1,3 +1,4 @@
+using BuisnessLogic.Configurations;
 using DataAccess.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,9 @@ string connStr = builder.Configuration.GetConnectionString("Remotedb")
 
 builder.Services.AddDbContext<CinemaDbContext>(options =>
     options.UseSqlServer(connStr));
+
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(cfg => { }, typeof(MapperProfile));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
