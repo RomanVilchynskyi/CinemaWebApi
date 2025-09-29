@@ -46,21 +46,16 @@ namespace Cinema.Controllers
              return Ok(mapper.Map<MovieDto>(item));
         }
         [HttpPost]
-        public IActionResult Create(CreateMovieDto model)
+        public IActionResult Create([FromBody] CreateMovieDto model)
         {
             // TODO: reference (class) vs value (structures)
-
-            //}
-            // model validation
-            if (!ModelState.IsValid)
-                return BadRequest(GetErrorMessages());
-
+            
             var entity = mapper.Map<Movie>(model);
             ctx.Movies.Add(entity);
             ctx.SaveChanges(); // generate id (execute INSERT SQL command)
 
             var result = mapper.Map<MovieDto>(entity);
-            //}
+
             // 201
             return CreatedAtAction(
                 nameof(Get),            // The action to get a single product

@@ -1,5 +1,7 @@
 using BuisnessLogic.Configurations;
 using DataAccess.Data;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +20,10 @@ builder.Services.AddAutoMapper(cfg => { }, typeof(MapperProfile));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
