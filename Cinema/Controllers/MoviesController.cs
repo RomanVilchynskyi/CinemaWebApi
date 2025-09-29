@@ -43,7 +43,7 @@ namespace Cinema.Controllers
              if (item == null)
                 return NotFound("Product not found!");
 
-             return Ok(item);
+             return Ok(mapper.Map<MovieDto>(item));
         }
         [HttpPost]
         public IActionResult Create(CreateMovieDto model)
@@ -70,14 +70,14 @@ namespace Cinema.Controllers
         }
 
         [HttpPut]
-        public IActionResult Edit(Movie model)
+        public IActionResult Edit(EditMovieDto model)
         {
             // model validation
             if (!ModelState.IsValid)
                 return BadRequest(GetErrorMessages());
 
             // logic...
-            ctx.Movies.Update(model);
+            ctx.Movies.Update(mapper.Map<Movie>(model));
             ctx.SaveChanges();
 
             return Ok(); // 200
