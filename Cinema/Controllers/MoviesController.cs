@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BuisnessLogic.DTOs;
+using BuisnessLogic.Interfaces;
 using DataAccess.Data;
 using DataAccess.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -11,50 +12,33 @@ namespace Cinema.Controllers
     [ApiController]
     public class MoviesController : ControllerBase
     {
-        
-        private readonly CinemaDbContext ctx;
-        private readonly IMapper mapper;
+       
+        private readonly IMoviesService moviesService;
 
-        public MoviesController(CinemaDbContext ctx, IMapper mapper)
+        public MoviesController(IMoviesService moviesService)
         {
-             this.ctx = ctx;
-            this.mapper = mapper;
+            this.moviesService = moviesService;
         }
 
         [HttpGet("all")]
         public IActionResult GetAll()
         {
-            //var items = ctx.Movies.ToList();
-            var items = ctx.Movies
-                           .Include(x => x.Genre)
-                           .ToList();
-
-            return Ok(mapper.Map<IEnumerable<MovieDto>>(items));
+            return Ok(moviesService.GetAll());
         }
 
         [HttpGet]
         public IActionResult Get(int id)
         {
-             if (id < 0)
-                 return BadRequest("Id can not be negative!");
-
-             var item = ctx.Movies.Find(id);
-
-             if (item == null)
-                return NotFound("Product not found!");
-
-             return Ok(mapper.Map<MovieDto>(item));
+            return Ok(moviesService.Get(id)); 
         }
         [HttpPost]
         public IActionResult Create([FromBody] CreateMovieDto model)
         {
             // TODO: reference (class) vs value (structures)
-            
-            var entity = mapper.Map<Movie>(model);
-            ctx.Movies.Add(entity);
-            ctx.SaveChanges(); // generate id (execute INSERT SQL command)
+            if (!ModelState.IsValid)
+                return BadRequest(GetErrorMessages());
 
-            var result = mapper.Map<MovieDto>(entity);
+            var result = moviesService.Create(model);
 
             // 201
             return CreatedAtAction(
@@ -71,9 +55,7 @@ namespace Cinema.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(GetErrorMessages());
 
-            // logic...
-            ctx.Movies.Update(mapper.Map<Movie>(model));
-            ctx.SaveChanges();
+            moviesService.Edit(model);
 
             return Ok(); // 200
         }
@@ -81,14 +63,8 @@ namespace Cinema.Controllers
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            if (id < 0)
-                return BadRequest("Id can not be negative!");
+            moviesService.Delete(id);
 
-            var item = ctx.Movies.Find(id);
-            if (item == null)
-                return NotFound("Product not found!");
-            ctx.Movies.Remove(item);
-            ctx.SaveChanges();
             return NoContent(); // 204
         }
         private IEnumerable<string> GetErrorMessages()

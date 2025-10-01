@@ -1,4 +1,6 @@
 using BuisnessLogic.Configurations;
+using BuisnessLogic.Interfaces;
+using BuisnessLogic.Services;
 using DataAccess.Data;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -24,6 +26,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped<IMoviesService, MoviesService>();
 
 var app = builder.Build();
 
