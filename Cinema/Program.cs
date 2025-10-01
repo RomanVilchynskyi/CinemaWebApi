@@ -1,6 +1,7 @@
 using BuisnessLogic.Configurations;
 using BuisnessLogic.Interfaces;
 using BuisnessLogic.Services;
+using Cinema;
 using DataAccess.Data;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -37,6 +38,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 

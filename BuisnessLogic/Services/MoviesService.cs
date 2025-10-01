@@ -4,6 +4,7 @@ using BuisnessLogic.Interfaces;
 using DataAccess.Data;
 using DataAccess.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace BuisnessLogic.Services
 {
@@ -29,12 +30,13 @@ namespace BuisnessLogic.Services
 
         public void Delete(int id)
         {
-            if (id < 0)  return;
+            if (id < 0) 
+                throw new HttpException("Id can not be negative.", HttpStatusCode.BadRequest);
 
             var item = ctx.Movies.Find(id);
 
             if (item == null)
-                return;
+                throw new HttpException($"Product with id:{id} not found.", HttpStatusCode.NotFound);
 
             ctx.Movies.Remove(item);
             ctx.SaveChanges();
@@ -49,12 +51,13 @@ namespace BuisnessLogic.Services
 
         public MovieDto? Get(int id)
         {
-            if (id < 0) return null;
+            if (id < 0) 
+                throw new HttpException("Id can not be negative.", HttpStatusCode.BadRequest);
 
             var item = ctx.Movies.Find(id);
 
             if (item == null)
-                return null;
+                throw new HttpException($"Product with id:{id} not found.", HttpStatusCode.NotFound);
 
             return mapper.Map<MovieDto>(item);
         }
