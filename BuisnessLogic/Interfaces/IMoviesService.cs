@@ -9,7 +9,7 @@ namespace BuisnessLogic.Interfaces
 {
     public interface IMoviesService
     {
-        IList<MovieDto> GetAll();
+        IList<MovieDto> GetAll(int? filterGenreId, string? searchTitle, int? searchYear, int? rating, bool sortByAsc);
         MovieDto? Get(int id);
         MovieDto Create(CreateMovieDto model);
         void Edit(EditMovieDto model);

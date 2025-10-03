@@ -21,9 +21,9 @@ namespace Cinema.Controllers
         }
 
         [HttpGet("all")]
-        public IActionResult GetAll()
+        public IActionResult GetAll(int? filterGenreId, string? searchTitle, int? searchYear, int? rating, bool sortByAsc)
         {
-            return Ok(moviesService.GetAll());
+            return Ok(moviesService.GetAll(filterGenreId, searchTitle, searchYear, rating, sortByAsc));
         }
 
         [HttpGet]

@@ -62,12 +62,29 @@ namespace BuisnessLogic.Services
             return mapper.Map<MovieDto>(item);
         }
 
-        public IList<MovieDto> GetAll()
+        public IList<MovieDto> GetAll(int? filterGenreId, string? searchTitle, int? searchYear, int? rating, bool sortByAsc)
         {
-            var items = ctx.Movies
-                           .Include(x => x.Genre)
-                           .ToList();
+            IQueryable<Movie> query = ctx.Movies
+                           .Include(x => x.Genre);
 
+            if(filterGenreId != null)
+                query = query.Where(x => x.GenreId == filterGenreId);
+
+            if (searchTitle != null)
+                query = query.Where(x => x.Title.ToLower().Contains(searchTitle.ToLower()));
+
+            if (searchYear != null)
+                query = query.Where(x => x.Year == searchYear);
+
+            if (rating != null)
+                query = query.Where(x => x.Rating == rating);
+
+            if(sortByAsc)
+                query = query.OrderBy(x => x.Rating);
+            else
+                query = query.OrderByDescending(x => x.Rating);
+
+            var items = query.ToList();
             return mapper.Map<IList<MovieDto>>(items);
         }
     }
