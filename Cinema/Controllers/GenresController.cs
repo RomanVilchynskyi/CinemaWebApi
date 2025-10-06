@@ -1,6 +1,5 @@
 ﻿using BuisnessLogic.DTOs;
 using BuisnessLogic.Interfaces;
-using DataAccess.Data;
 using DataAccess.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 

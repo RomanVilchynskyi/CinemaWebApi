@@ -1,18 +1,14 @@
-﻿using AutoMapper;
-using BuisnessLogic.DTOs;
+﻿using BuisnessLogic.DTOs;
 using BuisnessLogic.Interfaces;
-using DataAccess.Data;
-using DataAccess.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Cinema.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class MoviesController : ControllerBase
-    {
-       
+    { 
+
         private readonly IMoviesService moviesService;
 
         public MoviesController(IMoviesService moviesService)
@@ -21,24 +17,24 @@ namespace Cinema.Controllers
         }
 
         [HttpGet("all")]
-        public IActionResult GetAll(int? filterGenreId, string? searchTitle, int? searchYear, int? rating, bool sortByAsc)
+        public async Task<IActionResult> GetAll(int? filterGenreId, string? searchTitle, int? searchYear, int? rating, bool sortByAsc, int pageNumber = 1)
         {
-            return Ok(moviesService.GetAll(filterGenreId, searchTitle, searchYear, rating, sortByAsc));
+            return Ok(await moviesService.Get(filterGenreId, searchTitle, searchYear, rating, sortByAsc, pageNumber));
         }
-
+        
         [HttpGet]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return Ok(moviesService.Get(id)); 
+            return Ok(await moviesService.GetById(id)); 
         }
         [HttpPost]
-        public IActionResult Create([FromBody] CreateMovieDto model)
+        public async Task<IActionResult> Create([FromBody] CreateMovieDto model)
         {
             // TODO: reference (class) vs value (structures)
             if (!ModelState.IsValid)
                 return BadRequest(GetErrorMessages());
 
-            var result = moviesService.Create(model);
+            var result = await moviesService.Create(model);
 
             // 201
             return CreatedAtAction(
@@ -49,21 +45,21 @@ namespace Cinema.Controllers
         }
 
         [HttpPut]
-        public IActionResult Edit(EditMovieDto model)
+        public async Task<IActionResult> Edit(EditMovieDto model)
         {
             // model validation
             if (!ModelState.IsValid)
                 return BadRequest(GetErrorMessages());
 
-            moviesService.Edit(model);
+            await moviesService.Edit(model);
 
             return Ok(); // 200
         }
 
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            moviesService.Delete(id);
+            await moviesService.Delete(id);
 
             return NoContent(); // 204
         }

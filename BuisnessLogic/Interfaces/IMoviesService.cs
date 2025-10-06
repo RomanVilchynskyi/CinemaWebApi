@@ -1,18 +1,13 @@
 ﻿using BuisnessLogic.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BuisnessLogic.Interfaces
 {
     public interface IMoviesService
     {
-        IList<MovieDto> GetAll(int? filterGenreId, string? searchTitle, int? searchYear, int? rating, bool sortByAsc);
-        MovieDto? Get(int id);
-        MovieDto Create(CreateMovieDto model);
-        void Edit(EditMovieDto model);
-        void Delete(int id);
+        Task<IList<MovieDto>> Get(int? filterGenreId, string? searchTitle, int? searchYear, int? rating, bool sortByAsc, int pageNumber);
+        Task <MovieDto?> GetById(int id);
+        Task <MovieDto> Create(CreateMovieDto model);
+        Task Edit(EditMovieDto model);
+        Task Delete(int id);
     }
 }
