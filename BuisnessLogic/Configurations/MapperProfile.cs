@@ -13,6 +13,7 @@ namespace BuisnessLogic.Configurations
     {
         public MapperProfile()
         {
+            CreateMap<GenreDto, Genre>().ReverseMap();
             CreateMap<CreateMovieDto, Movie>();
             CreateMap<EditMovieDto, Movie>();
             CreateMap<MovieDto, Movie>().ReverseMap();

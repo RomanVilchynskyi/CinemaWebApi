@@ -29,6 +29,7 @@ builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IMoviesService, MoviesService>();
+builder.Services.AddScoped<IGenreService, GenreService>();
 
 var app = builder.Build();
 
