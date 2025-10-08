@@ -15,5 +15,6 @@
 
         public Genre Genre { get; set; }
 
+        public ICollection<SitOrderDetails>? SitOrderDetails { get; set; }
     }
 }

@@ -1,20 +1,18 @@
 ﻿using DataAccess.Data.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Data
 {
-    public class CinemaDbContext : DbContext
+    public class CinemaDbContext : IdentityDbContext<User>
     {
         public CinemaDbContext() { }
         public CinemaDbContext(DbContextOptions<CinemaDbContext> options) : base(options) { }
 
-        public DbSet<Movie> Movies { get; set; }
-        public DbSet<Genre> Genre { get; set; }
+        public DbSet<Movie> Movies { get; set; } = default!;
+        public DbSet<SitOrder> SitOrder { get; set; } = default!;
+        public DbSet<SitOrderDetails> SitOrderDetails { get; set; } = default!;
+        public DbSet<Genre> Genre { get; set; } = default!;
 
 
         /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -63,7 +61,8 @@ namespace DataAccess.Data
                     .HasMaxLength(100);
             });
 
-
+            modelBuilder.Entity<SitOrderDetails>().HasOne(x => x.SitOrder).WithMany(x => x.SitOrderDetails).HasForeignKey(x => x.SitOrderId);
+            modelBuilder.Entity<SitOrderDetails>().HasOne(x => x.Movie).WithMany(x => x.SitOrderDetails).HasForeignKey(x => x.MovieId);
         }
     }
 }
