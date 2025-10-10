@@ -3,6 +3,7 @@ using BuisnessLogic.Interfaces;
 using BuisnessLogic.Services;
 using Cinema;
 using DataAccess.Data;
+using DataAccess.Data.Entities;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +19,12 @@ string connStr = builder.Configuration.GetConnectionString("Remotedb")
 builder.Services.AddDbContext<CinemaDbContext>(options =>
     options.UseSqlServer(connStr));
 
+builder.Services.AddIdentity<User, IdentityRole>(options =>
+    options.SignIn.RequireConfirmedAccount = false)
+    .AddDefaultTokenProviders()
+    //.AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<CinemaDbContext>();
+
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(cfg => { }, typeof(MapperProfile));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -30,6 +37,7 @@ builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssembli
 
 builder.Services.AddScoped<IMoviesService, MoviesService>();
 builder.Services.AddScoped<IGenreService, GenreService>();
+builder.Services.AddScoped<IAccountsService, AccountsService>();
 
 var app = builder.Build();
 
