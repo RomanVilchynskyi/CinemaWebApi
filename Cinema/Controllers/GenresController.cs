@@ -1,10 +1,12 @@
 ﻿using BuisnessLogic.DTOs;
 using BuisnessLogic.Interfaces;
 using DataAccess.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class GenresController : ControllerBase

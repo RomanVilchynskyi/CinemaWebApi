@@ -1,9 +1,11 @@
 ﻿using BuisnessLogic.DTOs.Accounts;
 using BuisnessLogic.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema.Controllers
 {
+    [Authorize]
     public class AccountsController : ControllerBase
     {
         private readonly IAccountsService accountsService;
