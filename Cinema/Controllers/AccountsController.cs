@@ -5,7 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema.Controllers
 {
-    [Authorize]
+    
+
+    [Route("api/[controller]")]
+    [ApiController]
     public class AccountsController : ControllerBase
     {
         private readonly IAccountsService accountsService;
@@ -16,17 +19,17 @@ namespace Cinema.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterModel model)
+        public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             await accountsService.Register(model);
             return Ok();
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginModel model)
+        public async Task<IActionResult> Login([FromBody]LoginModel model)
         {
-            await accountsService.Login(model);
-            return Ok();
+            var res = await accountsService.Login(model);
+            return Ok(res);
         }
 
         [HttpPost("logout")]

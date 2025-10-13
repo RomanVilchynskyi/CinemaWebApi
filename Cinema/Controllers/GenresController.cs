@@ -1,12 +1,13 @@
 ﻿using BuisnessLogic.DTOs;
 using BuisnessLogic.Interfaces;
 using DataAccess.Data.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class GenresController : ControllerBase
