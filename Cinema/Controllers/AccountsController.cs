@@ -12,6 +12,7 @@ namespace Cinema.Controllers
     public class AccountsController : ControllerBase
     {
         private readonly IAccountsService accountsService;
+        private string? CurrentIp => HttpContext.Connection.RemoteIpAddress?.ToString();
 
         public AccountsController(IAccountsService accountsService)
         {
@@ -28,7 +29,7 @@ namespace Cinema.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]LoginModel model)
         {
-            var res = await accountsService.Login(model);
+            var res = await accountsService.Login(model, CurrentIp);
             return Ok(res);
         }
 
@@ -37,6 +38,12 @@ namespace Cinema.Controllers
         {
             await accountsService.Logout(model);
             return Ok();
+        }
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh(RefreshRequest model)
+        {
+            return Ok(await accountsService.Refresh(model, CurrentIp));
         }
     }
 }

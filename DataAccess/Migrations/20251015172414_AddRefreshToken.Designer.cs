@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    partial class CinemaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251015172414_AddRefreshToken")]
+    partial class AddRefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -693,7 +696,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Data.Entities.RefreshToken", b =>
                 {
                     b.HasOne("DataAccess.Data.Entities.User", "User")
-                        .WithMany("RefreshTokens")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -799,8 +802,6 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Data.Entities.User", b =>
                 {
-                    b.Navigation("RefreshTokens");
-
                     b.Navigation("SitOrders");
                 });
 #pragma warning restore 612, 618

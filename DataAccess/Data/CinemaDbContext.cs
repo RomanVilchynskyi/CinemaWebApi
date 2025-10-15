@@ -13,6 +13,7 @@ namespace DataAccess.Data
         public DbSet<SitOrder> SitOrder { get; set; } = default!;
         public DbSet<SitOrderDetails> SitOrderDetails { get; set; } = default!;
         public DbSet<Genre> Genre { get; set; } = default!;
+        public DbSet<RefreshToken> RefreshTokens { get; set; } = default!;
 
 
         /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
