@@ -1,18 +1,16 @@
 using BuisnessLogic.Configurations;
 using BuisnessLogic.DTOs;
+using BuisnessLogic.Extensions;
 using BuisnessLogic.Interfaces;
 using BuisnessLogic.Services;
 using Cinema;
+using Cinema.Extensions;
 using DataAccess.Data;
 using DataAccess.Data.Entities;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +52,7 @@ builder.Services.AddSwaggerWithJWT();
 
 var app = builder.Build();
 
+app.SeedRolesAndInitialAdmin();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

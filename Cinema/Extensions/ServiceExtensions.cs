@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 
-namespace Cinema
+namespace Cinema.Extensions
 {
     public static class ServiceExtensions
     {
