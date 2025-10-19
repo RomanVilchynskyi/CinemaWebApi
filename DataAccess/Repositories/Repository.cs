@@ -2,6 +2,7 @@
 using DataAccess.Data;
 using DataAccess.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace DataAccess.Repositories
 {
@@ -16,12 +17,23 @@ namespace DataAccess.Repositories
             this.set = context.Set<T>();
         }
 
-        public async Task<IReadOnlyList<T>> GetAllAsync(int? pageNumber = null, int pageSize = 10)
+        public async Task<IReadOnlyList<T>> GetAllAsync(
+            int? pageNumber = null,
+            int pageSize = 10,
+            Expression<Func<T, bool>>? filtering = null,
+            params string[]? includes)
         {
             var query = set.AsQueryable();
 
             if (pageNumber != null)
-                await PagedList<T>.CreateAsync(query, pageNumber.Value, pageSize); // ???
+               query = await query.PaginateAsync(pageNumber.Value, pageSize); // ???
+
+            if (filtering != null)
+                query = query.Where(filtering);
+
+            if (includes != null && includes.Length > 0)
+                foreach (var prop in includes)
+                    query = query.Include(prop);
 
             return await query.ToListAsync();
         }
@@ -45,10 +57,14 @@ namespace DataAccess.Repositories
         public async Task DeleteAsync(int id)
         {
             var entity = await GetByIdAsync(id);
+            await DeleteAsync(entity);
+        }
+        public async Task DeleteAsync(T? entity)
+        {
             if (entity != null)
             {
                 set.Remove(entity);
-                await context.SaveChangesAsync();
+                await context.SaveChangesAsync(true);
             }
         }
     }

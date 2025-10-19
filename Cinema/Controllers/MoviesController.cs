@@ -22,13 +22,13 @@ namespace Cinema.Controllers
         [HttpGet("all")]
         public async Task<IActionResult> GetAll(int? filterGenreId, string? searchTitle, int? searchYear, int? rating, bool sortByAsc, int pageNumber = 1)
         {
-            return Ok(await moviesService.Get(filterGenreId, searchTitle, searchYear, rating, sortByAsc, pageNumber));
+            return Ok(await moviesService.GetAll(filterGenreId, searchTitle, searchYear, rating, sortByAsc, pageNumber));
         }
         
         [HttpGet]
         public async Task<IActionResult> Get(int id)
         {
-            return Ok(await moviesService.GetById(id)); 
+            return Ok(await moviesService.Get(id)); 
         }
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateMovieDto model)
