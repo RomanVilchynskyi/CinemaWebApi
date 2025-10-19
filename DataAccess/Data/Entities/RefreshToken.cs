@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Data.Entities
 {
-    public class RefreshToken
+    public class RefreshToken : BaseEntity
     {
         public int Id { get; set; }
         public string Token { get; set; } = default!;

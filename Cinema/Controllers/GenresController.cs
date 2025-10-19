@@ -1,4 +1,5 @@
 ﻿using BuisnessLogic.DTOs;
+using BuisnessLogic.Helpers;
 using BuisnessLogic.Interfaces;
 using DataAccess.Data.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    
     [Route("api/[controller]")]
     [ApiController]
     public class GenresController : ControllerBase
@@ -31,6 +32,7 @@ namespace Cinema.Controllers
             return Ok(await genreService.GetById(id));
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPut("{id}")]
         public async Task<IActionResult> Edit(GenreDto category)
         {
@@ -38,6 +40,7 @@ namespace Cinema.Controllers
             return NoContent();
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost]
         public async Task<ActionResult<Genre>> Create(GenreDto category)
         {
@@ -45,6 +48,7 @@ namespace Cinema.Controllers
             return CreatedAtAction("GetCategory", new { id = item.Id }, item);
         }
 
+        [Authorize(Roles = Roles.ADMIN, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

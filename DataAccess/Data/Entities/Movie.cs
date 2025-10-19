@@ -1,6 +1,6 @@
 ﻿namespace DataAccess.Data.Entities
 {
-    public class Movie
+    public class Movie : BaseEntity
     {
         public int Id { get; set; }
         public string Title { get; set; }

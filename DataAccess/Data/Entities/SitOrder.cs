@@ -1,6 +1,6 @@
 ﻿namespace DataAccess.Data.Entities
 {
-    public class SitOrder
+    public class SitOrder : BaseEntity
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }

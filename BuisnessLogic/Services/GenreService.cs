@@ -4,6 +4,7 @@ using BuisnessLogic.Helpers;
 using BuisnessLogic.Interfaces;
 using DataAccess.Data;
 using DataAccess.Data.Entities;
+using DataAccess.Repositories;
 using System.Net;
 
 namespace BuisnessLogic.Services
@@ -11,20 +12,18 @@ namespace BuisnessLogic.Services
 
     public class GenreService : IGenreService
     {
-        private readonly CinemaDbContext ctx;
         private readonly IMapper mapper;
+        private readonly IRepository<Genre> repo;
 
-        public GenreService(CinemaDbContext ctx, IMapper mapper)
+        public GenreService(IMapper mapper, IRepository<Genre> repo)
         {
-            this.ctx = ctx;
             this.mapper = mapper;
+            this.repo = repo;
         }
         public async Task<GenreDto> Create(GenreDto model)
         {
-            var entity = mapper.Map<Genre>(model);
-
-            ctx.Genre.Add(entity);
-            await ctx.SaveChangesAsync();
+            var entity = mapper.Map<Genre>(model);            
+            await repo.AddAsync(entity);
 
             return mapper.Map<GenreDto>(entity);
         }
@@ -32,20 +31,18 @@ namespace BuisnessLogic.Services
         public async Task Delete(int id)
         {
             var item = await GetEntityById(id);
-
-            ctx.Genre.Remove(item);
-            await ctx.SaveChangesAsync(true);
+            await repo.DeleteAsync(id);
         }
 
         public async Task Edit(GenreDto model)
         {
-            ctx.Genre.Update(mapper.Map<Genre>(model));
-            await ctx.SaveChangesAsync();
+            var entity = mapper.Map<Genre>(model);
+            await repo.UpdateAsync(entity);
         }
 
         public async Task<IList<GenreDto>> Get(int pageNumber = 1)
         {
-            var items = await PagedList<Genre>.CreateAsync(ctx.Genre, pageNumber, 5);
+            var items = await repo.GetAllAsync(pageNumber, 5);
 
             return mapper.Map<IList<GenreDto>>(items);
         }
@@ -62,7 +59,7 @@ namespace BuisnessLogic.Services
             if (id < 0)
                 throw new HttpException("Id can not be negative.", HttpStatusCode.BadRequest); // 400
 
-            var item = await ctx.Genre.FindAsync(id);
+            var item = await repo.GetByIdAsync(id);
 
             if (item == null)
                 throw new HttpException($"Category with id:{id} not found.", HttpStatusCode.NotFound); // 404
