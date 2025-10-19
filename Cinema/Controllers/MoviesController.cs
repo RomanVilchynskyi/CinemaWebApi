@@ -1,5 +1,8 @@
 ﻿using BuisnessLogic.DTOs;
+using BuisnessLogic.Helpers;
 using BuisnessLogic.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema.Controllers
@@ -56,6 +59,7 @@ namespace Cinema.Controllers
             return Ok(); // 200
         }
 
+        [Authorize(Roles = Roles.ADMIN, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
