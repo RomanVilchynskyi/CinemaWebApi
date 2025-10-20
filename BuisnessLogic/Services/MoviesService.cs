@@ -81,7 +81,7 @@ namespace BuisnessLogic.Services
                 filterEx = filterEx.And(x => x.GenreId == filterGenreId);
             if (!string.IsNullOrWhiteSpace(searchTitle))
                 filterEx = filterEx.And(x => x.Title.ToLower().Contains(searchTitle.ToLower()));
-            var items = await repo.GetAllAsync(filtering: filterEx, includes: nameof(Movie.Genre));
+            var items = await repo.GetAllAsync(pageNumber: pageNumber, filtering: filterEx, includes: nameof(Movie.Genre));
             return mapper.Map<IList<MovieDto>>(items);
         }
     }
